@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import Fuse from 'fuse.js'
 import Omnitable from './Omnitable'
+import DotMap from './DotMap'
 
 class App extends Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class App extends Component {
       return (
         // <Omnitable data={items} keyName="title" />
         <div>
+          <DotMap width={800} height={600} />
           <form onSubmit={this.handleSubmit}>
             <input type="text" value={searchPattern} onChange={this.handleChange} />
           </form>

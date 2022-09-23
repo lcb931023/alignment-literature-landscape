@@ -16,7 +16,7 @@ class Omnitable extends Component {
       </thead>
       <tbody>
         {this.props.data.map((item, index) => (
-          <tr key={`${index} - ${item[this.props.keyName]}`}>
+          <tr key={`${index}-${item[this.props.keyName]}`}>
             {Object.values(item).map(value => (
               <td key={value}>{value}</td>
             ))}
