@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("/literature.json")
+    fetch("/literature-with-abstract.json")
       .then(res => res.json())
       .then(
         (result) => {
@@ -38,7 +38,10 @@ class App extends Component {
             items: result
           });
           this.fuse = new Fuse(result, {
-            keys: ['title']
+            keys: ['title', 'tags', 'abstract'],
+            includeScore: true,
+            distance: 200,
+            threshold: 0.49,
           })
         },
         (error) => {
@@ -58,15 +61,21 @@ class App extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        // <Omnitable data={items} keyName="title" />
         <div>
-          <DotMap width={800} height={600} />
+          {/* <Omnitable data={items} keyName="title" /> */}
+          <DotMap width={600} height={600} data={
+            searchResult.length ?
+            searchResult.map(result => ({...result.item, refIndex: result.refIndex, score: result.score})):
+            items
+            } />
           <form onSubmit={this.handleSubmit}>
             <input type="text" value={searchPattern} onChange={this.handleChange} />
+            <input type="submit"/>
+            <input type="button" value="Clear" onClick={()=>{this.setState({searchPattern:"", searchResult:[]})}}/>
           </form>
           {
             searchResult.length ?
-            <Omnitable data={searchResult.map(result => ({...result.item, refIndex: result.refIndex}))} keyName="title" /> : ''
+            <Omnitable data={searchResult.map(result => ({...result.item, refIndex: result.refIndex, score: result.score}))} keyName="title" /> : ''
           }
         </div>
       );
